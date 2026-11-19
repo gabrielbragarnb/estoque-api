@@ -1,27 +1,63 @@
-require('dotenv').config();
-const express = require('express');
+import 'dotenv/config';
+import express, { json, urlencoded } from 'express';
+import loggerMiddleware from './src/middleware/logger.js';
+
 const app = express();
-const port = 3000; 
+const port = 3000;
 
-app.get('/', function (req,res){
-    res.send('Guilherme Ferreira2'+ process.env.nome)
+// Middleware para formatar o body JSON
+app.use(json());
 
+// Middleware para formatar dados de formulário
+app.use(urlencoded({ extended: true }));
+
+// Aplicação dos middlewares
+app.use(loggerMiddleware);
+app.use(valorProdutoMiddleware);
+
+// Rota principal
+app.get('/', (req, res) => {
+    res.status(200).json({
+        "status": "ok",
+        "codigo": 200,
+        "mensagem": "API de estoque funcionando!(Bem vindo!)"
+    });
 });
 
-app.post('/produtos',(req,res) => {
-    res.send('O produto foi criado!')
-})
+// Criar produto
+app.post('/produtos', (req, res) => {
+    let produto = req.body;
+    res.status(201).json({
+        "status": "criado",
+        "codigo": 201,
+        "mensagem": `O produto ${produto.nome} foi criado! Valor ${produto.preco}`
+    });
+});
 
-app.put ('/produtos/:id',(req,res) => {
-    let id = req.params.id
-    res.send(` O produto ${id} foi alterado!`)
-})
+// Alterar produto
+app.put('/produtos/:id', (req, res) => {
+    let id = req.params.id;
+    let produto = req.body;
 
-app.delete('/produtos/:id',(req,res) => {
-    let id = req.params.id
-    res.send(`O produto ${id} foi deletado!`)
-})
+    res.status(200).json({
+        "status": "alterado",
+        "codigo": 200,
+        "mensagem": `O produto ${id} foi alterado! Nome ${produto.nome}, valor ${produto.preco}`
+    });
+});
 
-app.listen(port, function(){
-    console.log('Servidor rodando na porta'  + port)
-})
+// Deletar produto
+app.delete('/produtos/:id', (req, res) => {
+    let id = req.params.id;
+
+    res.status(200).json({
+        "status": "deletado",
+        "codigo": 200,
+        "mensagem": `O produto ${id} foi deletado!`
+    });
+});
+
+// Iniciar servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+});

@@ -11,8 +11,8 @@
     "url": "git+https://github.com/heitorhjcostaK1LL/estoque-api.git"
   },
   "license": "ISC",
-  "author": "heitorhjcosta@gmail.com",
-  "type": "commonjs",
+  "author": "gabrielbragarnb@gmail.com",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",

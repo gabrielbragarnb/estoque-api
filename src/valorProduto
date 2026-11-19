@@ -1,0 +1,10 @@
+export default function(req, res, next) {
+    let preco = req.body.preco
+    if (preco > 100 ){
+        next()
+    } else {
+        //chutar pra fora
+        res.send("não autorizado pruduto menor que 100")
+    }   
+}
+
