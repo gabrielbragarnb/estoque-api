@@ -49,7 +49,6 @@ app.put('/produtos/:id', (req, res) => {
 // Deletar produto
 app.delete('/produtos/:id', (req, res) => {
     let id = req.params.id;
-
     res.status(200).json({
         "status": "deletado",
         "codigo": 200,
